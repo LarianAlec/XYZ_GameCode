@@ -17,7 +17,11 @@ class GAMECODE_API AGameCodeBasePawn : public APawn
 public:
 	AGameCodeBasePawn();
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Move(const FInputActionValue& Value);
+	void StopMoving(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void Jump(const FInputActionValue& Value);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetForwardInput() { return InputForward; }
@@ -27,19 +31,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void Move(const FInputActionValue& Value);
-	void StopMoving(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* JumpAction;
 
 	UPROPERTY(VisibleAnywhere)
 	class UPawnMovementComponent* MovementComponent;

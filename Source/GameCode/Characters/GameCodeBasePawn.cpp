@@ -1,8 +1,6 @@
 // Alec Larin
 
 #include "GameCodeBasePawn.h"
-#include "EnhancedInputComponent.h"
-//#include "GameFramework/FloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "../Components/MovementComponent/GCPawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,7 +16,6 @@ AGameCodeBasePawn::AGameCodeBasePawn()
 	CollisionComponent->SetCollisionProfileName(UCollisionProfile::Pawn_ProfileName);
 	RootComponent = CollisionComponent;
 
-	//MovementComponent = CreateDefaultSubobject<UPawnMovementComponent, UFloatingPawnMovement>(TEXT("Floating movement component"));
 	MovementComponent = CreateDefaultSubobject<UPawnMovementComponent, UGCPawnMovementComponent>(TEXT("Pawn movement component"));
 	MovementComponent->SetUpdatedComponent(CollisionComponent);
 
@@ -37,7 +34,6 @@ AGameCodeBasePawn::AGameCodeBasePawn()
 #endif
 }
 
-// Called when the game starts or when spawned
 void AGameCodeBasePawn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -46,25 +42,10 @@ void AGameCodeBasePawn::BeginPlay()
 	CameraManager->OnBlendComplete().AddUFunction(this, FName("OnBlendComplete"));
 }
 
-// Called every frame
 void AGameCodeBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-// Called to bind functionality to input
-void AGameCodeBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGameCodeBasePawn::Move);
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AGameCodeBasePawn::StopMoving);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGameCodeBasePawn::Look);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AGameCodeBasePawn::Jump);
-	}
 }
 
 void AGameCodeBasePawn::Move(const FInputActionValue& Value)
