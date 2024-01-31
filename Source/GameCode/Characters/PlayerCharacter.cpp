@@ -44,6 +44,7 @@ void APlayerCharacter::MoveRight(float Value)
 		FRotator YawRotator(0.0f, GetControlRotation().Yaw, 0.0f);
 		FVector RightVector = YawRotator.RotateVector(FVector::RightVector);
 		AddMovementInput(RightVector, Value);
+		//AddMovementInput(GetActorRightVector(), Value);
 	}
 }
 

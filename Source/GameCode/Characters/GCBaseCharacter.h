@@ -12,8 +12,13 @@ class GAMECODE_API AGCBaseCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
+	AGCBaseCharacter();
 	virtual void MoveForward(float Value) {};
 	virtual void MoveRight(float Value) {};
 	virtual void Turn(float Value) {};
 	virtual void LookUp(float Value) {};
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
+	class UCharacterAttributesComponent* CharacterAttributesComponent;
 };

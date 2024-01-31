@@ -24,8 +24,8 @@ void AGCPlayerController::SetupInputComponent()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			checkf(InputMapping->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent Invalid InputMapping property!"));
-			checkf(InputActions->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent Invalid InputActions property!"));
+			checkf(InputMapping->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent InputMapping must be valid!"));
+			checkf(InputActions->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent InputActions must be valid!"));
 
 			Subsystem->AddMappingContext(InputMapping, 0);
 
