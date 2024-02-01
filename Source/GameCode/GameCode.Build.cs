@@ -14,6 +14,7 @@ public class GameCode : ModuleRules
 
 		PrivateIncludePaths.AddRange(new string[] { Name });
 
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		

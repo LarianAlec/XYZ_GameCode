@@ -1,7 +1,7 @@
 // Alec Larin
 
 #include "SpiderPawnAnimInstance.h"
-#include "../SpiderPawn.h"
+#include "Characters/SpiderPawn.h"
 
 void USpiderPawnAnimInstance::NativeBeginPlay()
 {

@@ -2,11 +2,11 @@
 
 
 #include "GCPlayerController.h"
-#include "../GCBaseCharacter.h"
+#include "Characters/GCBaseCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
-#include "../../Input/GCCharacterInputConfigData.h"
+#include "Input/GCCharacterInputConfigData.h"
 #include "InputMappingContext.h"
 
 
@@ -24,8 +24,8 @@ void AGCPlayerController::SetupInputComponent()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			checkf(InputMapping->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent InputMapping must be valid!"));
-			checkf(InputActions->IsValidLowLevel(), TEXT("AGCPlayerController::SetupInputComponent InputActions must be valid!"));
+			checkf(IsValid(InputMapping), TEXT("AGCPlayerController::SetupInputComponent InputMapping must be valid!"));
+			checkf(IsValid(InputActions), TEXT("AGCPlayerController::SetupInputComponent InputActions must be valid!"));
 
 			Subsystem->AddMappingContext(InputMapping, 0);
 

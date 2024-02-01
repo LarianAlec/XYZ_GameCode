@@ -2,8 +2,8 @@
 
 
 #include "GCBaseCharacterAnimInstance.h"
-#include "../GCBaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Characters/GCBaseCharacter.h"
 
 void UGCBaseCharacterAnimInstance::NativeBeginPlay()
 {

@@ -2,7 +2,7 @@
 
 #include "GameCodeBasePawn.h"
 #include "Components/SphereComponent.h"
-#include "../Components/MovementComponent/GCPawnMovementComponent.h"
+#include "Components/MovementComponent/GCPawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/PlayerCameraManager.h"
 #include "GameFramework/SpringArmComponent.h"

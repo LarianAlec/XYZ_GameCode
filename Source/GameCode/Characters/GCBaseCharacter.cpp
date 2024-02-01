@@ -1,16 +1,18 @@
 // Alec Larin
 
 #include "GCBaseCharacter.h"
-#include "../Components/Character/CharacterAttributesComponent.h"
+#include "Components/CharacterComponents/CharacterAttributesComponent.h"
 #include "Animation/AnimMontage.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Engine/HitResult.h"
 #include "GameFramework/Actor.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 AGCBaseCharacter::AGCBaseCharacter()
 {
 	CharacterAttributesComponent = CreateDefaultSubobject<UCharacterAttributesComponent>(TEXT("Character Attributes"));
+	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("Character Equipment"));
 }
 
 void AGCBaseCharacter::BeginPlay()

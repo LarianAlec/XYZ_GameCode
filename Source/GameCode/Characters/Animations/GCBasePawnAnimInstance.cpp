@@ -2,8 +2,8 @@
 
 
 #include "GCBasePawnAnimInstance.h"
-#include "../GameCodeBasePawn.h"
-#include "../../Components/MovementComponent/GCPawnMovementComponent.h"
+#include "Characters/GameCodeBasePawn.h"
+#include "Components/MovementComponent/GCPawnMovementComponent.h"
 
 void UGCBasePawnAnimInstance::NativeBeginPlay()
 {
