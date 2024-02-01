@@ -24,6 +24,11 @@ public:
 
 	virtual void LookUp(float Value) {};
 
+	virtual void Falling() override;
+
+	virtual void NotifyJumpApex() override;
+
+	virtual void Landed(const FHitResult& Hit) override;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
@@ -35,4 +40,10 @@ protected:
 	class UAnimMontage* OnDeathAnimMontage;
 
 	void EnableRagdoll();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Attributes")
+	class UCurveFloat* FallDamageCurve;
+
+private:
+	FVector CurrentFallApex;
 };

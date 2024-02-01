@@ -38,7 +38,7 @@ void UCharacterAttributesComponent::OnTakeAnyDamage(AActor* DamagedActor, float 
 		return;
 	}
 
-	UE_LOG(LogDamage, Warning, TEXT("UCharacterAttributesComponent::OnTakeAnyDamage %s recieved %.2f amount of damage from %s. Current Health: %.2f"), *CachedBaseCharacterOwner->GetName(), Damage, *DamageCauser->GetName(), Health)
+	UE_LOG(LogDamage, Warning, TEXT("UCharacterAttributesComponent::OnTakeAnyDamage %s recieved %.2f amount of damage from %s. Current Health: %.2f"), *CachedBaseCharacterOwner->GetName(), Damage, *DamageCauser->GetName(), Health - Damage)
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 
 	if (Health <= 0.0f)

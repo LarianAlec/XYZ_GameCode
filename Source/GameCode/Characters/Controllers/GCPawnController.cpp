@@ -23,8 +23,8 @@ void AGCPawnController::SetupInputComponent()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			checkf(InputMapping->IsValidLowLevel(), TEXT("AAGCPawnController::SetupInputComponent() Invalid InputMapping property!"));
-			checkf(InputActions->IsValidLowLevel(), TEXT("AGCPawnController::SetupInputComponent() Invalid InputActions property!"));
+			checkf(IsValid(InputMapping), TEXT("AAGCPawnController::SetupInputComponent() Invalid InputMapping property!"));
+			checkf(IsValid(InputActions), TEXT("AGCPawnController::SetupInputComponent() Invalid InputActions property!"));
 
 			Subsystem->AddMappingContext(InputMapping, 0);
 
