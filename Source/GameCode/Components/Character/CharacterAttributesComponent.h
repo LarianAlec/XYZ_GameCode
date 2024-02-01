@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "CharacterAttributesComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDeathEventSignature)
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GAMECODE_API UCharacterAttributesComponent : public UActorComponent
@@ -15,6 +16,10 @@ class GAMECODE_API UCharacterAttributesComponent : public UActorComponent
 public:	
 	UCharacterAttributesComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	FOnDeathEventSignature OnDeathEvent;
+
+	bool IsAlive() { return Health > 0; }
 
 protected:
 	virtual void BeginPlay() override;
