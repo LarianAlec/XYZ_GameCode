@@ -5,6 +5,8 @@
 #include "GameCodeTypes.h"
 #include "Engine/World.h"
 #include "Engine/DamageEvents.h"
+#include "NiagaraFunctionLibrary.h"
+
 
 
 void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, AController* Controller)
@@ -12,6 +14,7 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 	FVector MuzzleLocation	= GetComponentLocation();
  	FVector ShotEnd = ShotStart + FiringRange * ShotDirection;
 
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), MuzzleFlashFX, MuzzleLocation, GetComponentRotation());
 
 	FHitResult ShotResult;
 	if (GetWorld()->LineTraceSingleByChannel(ShotResult, ShotStart, ShotEnd, ECC_Bullet))
