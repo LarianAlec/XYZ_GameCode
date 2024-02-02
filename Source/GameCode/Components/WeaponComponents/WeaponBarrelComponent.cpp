@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "Engine/DamageEvents.h"
 #include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 
 
@@ -28,5 +29,8 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 
 		DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, FColor::Red, false, 1.0f);
 	}
-	DrawDebugLine(GetWorld(), MuzzleLocation, ShotEnd, FColor::Red, false, 1.0f, 0, 3.0f);
+
+	UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX, MuzzleLocation, GetComponentRotation());
+	TraceFXComponent->SetVectorParameter(FXParamTraceEnd, ShotEnd);
+
 }

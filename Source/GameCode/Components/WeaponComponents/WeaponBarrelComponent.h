@@ -25,4 +25,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes | VFX")
 	UNiagaraSystem* MuzzleFlashFX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes | VFX")
+	UNiagaraSystem* TraceFX;
 };

@@ -4,9 +4,14 @@
 
 #define ECC_Bullet ECC_GameTraceChannel1
 
+const FName FXParamTraceEnd = FName("TraceEnd");
+
 const FName SocketCharacterWeapon = FName("CharacterWeaponSocket");
 const FName SocketWeaponMuzzle = FName("MuzzleSocket");
+
 const FName DebugCategoryRangeWeapon = FName("RangeWeapon");
+
+
 
 UENUM(BlueprintType)
 enum class EEquipableItemType : uint8
