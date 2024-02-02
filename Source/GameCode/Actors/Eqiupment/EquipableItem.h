@@ -16,5 +16,6 @@ public:
 	EEquipableItemType GetItemType() const;
 	
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	EEquipableItemType ItemType = EEquipableItemType::None;
 };
