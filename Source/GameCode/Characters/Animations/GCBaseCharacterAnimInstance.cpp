@@ -29,6 +29,8 @@ void UGCBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsStrafing = !CharacterMovement->bOrientRotationToMovement;
 	Direction = CalculateDirection(CharacterMovement->Velocity, CachedBaseCharacter->GetActorRotation());
 
+	AimRotation = CachedBaseCharacter->GetBaseAimRotation();
+
 	const UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
 	CurrentEquippedItemType = CharacterEquipment->GetCurrentEquippedItemType();
 

@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character animation", meta = (UIMin = -180.0f, UIMax = 180.0f))
 	float Direction = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterAnimation")
+	FRotator AimRotation = FRotator::ZeroRotator;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character animation")
 	EEquipableItemType CurrentEquippedItemType = EEquipableItemType::None;
 
