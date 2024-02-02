@@ -7,6 +7,16 @@
 #include "GameCodeTypes.h"
 
 
+EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItemType() const 
+{
+	EEquipableItemType Result = EEquipableItemType::None;
+	if (IsValid(CurrentEquipedItem))
+	{
+		Result = CurrentEquipedItem->GetItemType();
+	}
+	return Result;
+}
+
 void UCharacterEquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();

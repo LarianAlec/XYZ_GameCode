@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameCodeTypes.h"
 #include "CharacterEquipmentComponent.generated.h"
+
 
 class ARangeWeaponItem;
 
@@ -14,9 +16,12 @@ class GAMECODE_API UCharacterEquipmentComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	virtual void BeginPlay() override;
+	EEquipableItemType GetCurrentEquippedItemType() const;
+
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
 	TSubclassOf<ARangeWeaponItem> SideArmClass;
 

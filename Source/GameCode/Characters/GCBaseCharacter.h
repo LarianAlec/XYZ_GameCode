@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "GCBaseCharacter.generated.h"
 
+
+class UCharacterEquipmentComponent;
 UCLASS(Abstract, NotBlueprintable)
 class GAMECODE_API AGCBaseCharacter : public ACharacter
 {
@@ -30,6 +32,8 @@ public:
 
 	virtual void Landed(const FHitResult& Hit) override;
 
+	const UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
 	class UCharacterAttributesComponent* CharacterAttributesComponent;
@@ -45,7 +49,7 @@ protected:
 	class UCurveFloat* FallDamageCurve;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
-	class UCharacterEquipmentComponent* CharacterEquipmentComponent;
+	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
 private:
 	FVector CurrentFallApex;

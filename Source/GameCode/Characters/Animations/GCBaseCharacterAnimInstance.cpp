@@ -4,6 +4,7 @@
 #include "GCBaseCharacterAnimInstance.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/GCBaseCharacter.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 void UGCBaseCharacterAnimInstance::NativeBeginPlay()
 {
@@ -24,4 +25,11 @@ void UGCBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	UCharacterMovementComponent* CharacterMovement = CachedBaseCharacter->GetCharacterMovement();
 	Speed = CharacterMovement->Velocity.Size();
 	bIsFalling = CharacterMovement->IsFalling();
+	
+	bIsStrafing = !CharacterMovement->bOrientRotationToMovement;
+	Direction = CalculateDirection(CharacterMovement->Velocity, CachedBaseCharacter->GetActorRotation());
+
+	const UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
+	CurrentEquippedItemType = CharacterEquipment->GetCurrentEquippedItemType();
+
 }

@@ -45,6 +45,11 @@ void AGCBaseCharacter::Landed(const FHitResult& Hit)
 	}
 }
 
+const UCharacterEquipmentComponent* AGCBaseCharacter::GetCharacterEquipmentComponent() const
+{
+	return CharacterEquipmentComponent;
+}
+
 void AGCBaseCharacter::OnDeath()
 {
 	GetCharacterMovement()->DisableMovement();
