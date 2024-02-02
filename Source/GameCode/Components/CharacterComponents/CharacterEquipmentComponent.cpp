@@ -10,11 +10,19 @@
 EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItemType() const 
 {
 	EEquipableItemType Result = EEquipableItemType::None;
-	if (IsValid(CurrentEquipedItem))
+	if (IsValid(CurrentEquippedWeapon))
 	{
-		Result = CurrentEquipedItem->GetItemType();
+		Result = CurrentEquippedWeapon->GetItemType();
 	}
 	return Result;
+}
+
+void UCharacterEquipmentComponent::Fire()
+{
+	if (IsValid(CurrentEquippedWeapon))
+	{
+		CurrentEquippedWeapon->Fire();
+	}
 }
 
 void UCharacterEquipmentComponent::BeginPlay()
@@ -31,6 +39,7 @@ void UCharacterEquipmentComponent::CreateLoadout()
 	{
 		return;
 	}
-	CurrentEquipedItem = GetWorld()->SpawnActor<ARangeWeaponItem>(SideArmClass);
-	CurrentEquipedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
+	CurrentEquippedWeapon = GetWorld()->SpawnActor<ARangeWeaponItem>(SideArmClass);
+	CurrentEquippedWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
+	CurrentEquippedWeapon->SetOwner(CachedBaseCharacter.Get());
 }

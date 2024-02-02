@@ -26,6 +26,8 @@ public:
 
 	virtual void LookUp(float Value) {};
 
+	void Fire();
+
 	virtual void Falling() override;
 
 	virtual void NotifyJumpApex() override;

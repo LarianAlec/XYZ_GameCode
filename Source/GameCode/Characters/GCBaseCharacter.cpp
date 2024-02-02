@@ -22,6 +22,11 @@ void AGCBaseCharacter::BeginPlay()
 	CharacterAttributesComponent->OnDeathEvent.AddUObject(this, &AGCBaseCharacter::OnDeath);
 }
 
+void AGCBaseCharacter::Fire()
+{
+	CharacterEquipmentComponent->Fire();
+}
+
 void AGCBaseCharacter::Falling()
 {
 	this->GetCharacterMovement()->bNotifyApex = true;

@@ -27,9 +27,10 @@ protected:
 
 private:
 	void Move(const FInputActionValue& Value);
-	void StopMoving(const FInputActionValue& Value);
+	//void StopMoving(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
+	void Fire(const FInputActionValue& Value);
 
 	TSoftObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 };

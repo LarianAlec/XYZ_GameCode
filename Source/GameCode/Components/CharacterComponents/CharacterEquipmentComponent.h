@@ -18,6 +18,7 @@ class GAMECODE_API UCharacterEquipmentComponent : public UActorComponent
 public:
 	EEquipableItemType GetCurrentEquippedItemType() const;
 
+	void Fire();
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,6 +29,6 @@ protected:
 private:
 	void CreateLoadout();
 
-	ARangeWeaponItem* CurrentEquipedItem;
+	ARangeWeaponItem* CurrentEquippedWeapon;
 	TWeakObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 };

@@ -2,33 +2,28 @@
 
 
 #include "WeaponBarrelComponent.h"
+#include "GameCodeTypes.h"
+#include "Engine/World.h"
+#include "Engine/DamageEvents.h"
 
-// Sets default values for this component's properties
-UWeaponBarrelComponent::UWeaponBarrelComponent()
+
+void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, AController* Controller)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	FVector MuzzleLocation	= GetComponentLocation();
+ 	FVector ShotEnd = ShotStart + FiringRange * ShotDirection;
 
-	// ...
+
+	FHitResult ShotResult;
+	if (GetWorld()->LineTraceSingleByChannel(ShotResult, ShotStart, ShotEnd, ECC_Bullet))
+	{
+		ShotEnd = ShotResult.ImpactPoint;
+		AActor* HitActor = ShotResult.GetActor();
+		if (IsValid(HitActor))
+		{
+			HitActor->TakeDamage(DamageAmount, FDamageEvent{}, Controller, GetOwner());
+		}
+
+		DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, FColor::Red, false, 1.0f);
+	}
+	DrawDebugLine(GetWorld(), MuzzleLocation, ShotEnd, FColor::Red, false, 1.0f, 0, 3.0f);
 }
-
-
-// Called when the game starts
-void UWeaponBarrelComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UWeaponBarrelComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-

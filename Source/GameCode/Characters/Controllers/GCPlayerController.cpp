@@ -31,9 +31,10 @@ void AGCPlayerController::SetupInputComponent()
 
 			UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 			EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Triggered, this, &AGCPlayerController::Move);
-			EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopMoving);
+			//EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopMoving);
 			EnhancedInputComponent->BindAction(InputActions->LookAction, ETriggerEvent::Triggered, this, &AGCPlayerController::Look);
 			EnhancedInputComponent->BindAction(InputActions->JumpAction, ETriggerEvent::Started, this, &AGCPlayerController::Jump);
+			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &AGCPlayerController::Fire);
 		}
 	}
 }
@@ -48,13 +49,15 @@ void AGCPlayerController::Move(const FInputActionValue& Value)
 	}
 }
 
+/*
 void AGCPlayerController::StopMoving(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
-		/*CachedBaseCharacter->StopMoving(Value);*/
+		//CachedBaseCharacter->StopMoving(Value);
 	}
 }
+*/
 
 void AGCPlayerController::Look(const FInputActionValue& Value)
 {
@@ -71,5 +74,13 @@ void AGCPlayerController::Jump(const FInputActionValue& Value)
 	if (CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->Jump();
+	}
+}
+
+void AGCPlayerController::Fire(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->Fire();
 	}
 }
