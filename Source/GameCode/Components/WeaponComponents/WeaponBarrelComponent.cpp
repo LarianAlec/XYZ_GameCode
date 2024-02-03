@@ -7,6 +7,8 @@
 #include "Engine/DamageEvents.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/DecalComponent.h"
 
 
 
@@ -27,7 +29,13 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 			HitActor->TakeDamage(DamageAmount, FDamageEvent{}, Controller, GetOwner());
 		}
 
-		DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, FColor::Red, false, 1.0f);
+		//DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, FColor::Red, false, 1.0f);
+		UDecalComponent* DecalComponent = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), DefaultDecalInfo.DecalMaterial, DefaultDecalInfo.DecalSize, ShotResult.ImpactPoint, ShotResult.ImpactNormal.ToOrientationRotator());
+		if (IsValid(DecalComponent))
+		{
+			DecalComponent->SetFadeOut(DefaultDecalInfo.DecalLifeTime, DefaultDecalInfo.DecalFadeOutTime);
+			DecalComponent->SetFadeScreenSize(DefaultDecalInfo.DecalFadeScreenSize);
+		}
 	}
 
 	UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX, MuzzleLocation, GetComponentRotation());
