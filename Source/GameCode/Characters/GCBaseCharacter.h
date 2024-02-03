@@ -26,7 +26,9 @@ public:
 
 	virtual void LookUp(float Value) {};
 
-	void Fire();
+	void StartFire();
+
+	void StopFire();
 
 	virtual void Falling() override;
 

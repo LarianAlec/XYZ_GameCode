@@ -30,7 +30,8 @@ private:
 	//void StopMoving(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
-	void Fire(const FInputActionValue& Value);
+	void StartFire(const FInputActionValue& Value);
+	void StopFire(const FInputActionValue& Value);
 
 	TSoftObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 };

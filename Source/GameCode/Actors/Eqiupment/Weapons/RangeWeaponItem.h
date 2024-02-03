@@ -6,9 +6,15 @@
 #include "Actors/Eqiupment/EquipableItem.h"
 #include "RangeWeaponItem.generated.h"
 
+UENUM(BlueprintType)
+enum class EWeaponFireMode : uint8
+{
+	Single,
+	FullAuto
+};
+
 
 class UAnimMontage;
-
 UCLASS(Blueprintable)
 class GAMECODE_API ARangeWeaponItem : public AEquipableItem
 {
@@ -17,7 +23,9 @@ class GAMECODE_API ARangeWeaponItem : public AEquipableItem
 public:
 	ARangeWeaponItem();
 
-	void Fire();
+	void StartFire();
+
+	void StopFire();
 
 	FTransform GetForeGripTransform() const;
 
@@ -34,6 +42,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Animations | Character")
 	UAnimMontage* CharacterFireMontage;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters")
+	EWeaponFireMode WeaponFireMode = EWeaponFireMode::Single;
+
+	// Rate of fire on rounds per minute
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 1.0f, UIMin = 1.0f))
+	float RateOfFire = 600.0f;
+
+
 private:
+	void MakeShot();
+
+	float GetShotTimerInterval() const;
+
 	float PlayAnimMontage(UAnimMontage* AnimMontage);
+
+	FTimerHandle ShotTimer;
 };

@@ -22,13 +22,6 @@ ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 	return CurrentEquippedWeapon;
 }
 
-void UCharacterEquipmentComponent::Fire()
-{
-	if (IsValid(CurrentEquippedWeapon))
-	{
-		CurrentEquippedWeapon->Fire();
-	}
-}
 
 void UCharacterEquipmentComponent::BeginPlay()
 {

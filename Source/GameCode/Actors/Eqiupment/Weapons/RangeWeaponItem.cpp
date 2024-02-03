@@ -19,7 +19,27 @@ ARangeWeaponItem::ARangeWeaponItem()
 	WeaponBarrel->SetupAttachment(WeaponMesh, SocketWeaponMuzzle);
 }
 
-void ARangeWeaponItem::Fire()
+void ARangeWeaponItem::StartFire()
+{
+	MakeShot();
+	if (WeaponFireMode == EWeaponFireMode::FullAuto)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+		GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::MakeShot, GetShotTimerInterval(), true);
+	}
+}
+
+void ARangeWeaponItem::StopFire()
+{
+	GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+}
+
+FTransform ARangeWeaponItem::GetForeGripTransform() const 
+{
+	return WeaponMesh->GetSocketTransform(SocketWeaponForeGrip);
+}
+
+void ARangeWeaponItem::MakeShot()
 {
 	checkf(GetOwner()->IsA<AGCBaseCharacter>(), TEXT("ARangeWeaponItem::Fire() only AGCBaseCharacter can be an owner of a ARangeWeaponItem"))
 	AGCBaseCharacter* CharacterOwner = StaticCast<AGCBaseCharacter*>(GetOwner());
@@ -43,9 +63,9 @@ void ARangeWeaponItem::Fire()
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller);
 }
 
-FTransform ARangeWeaponItem::GetForeGripTransform() const 
+float ARangeWeaponItem::GetShotTimerInterval() const
 {
-	return WeaponMesh->GetSocketTransform(SocketWeaponForeGrip);
+	return 60.0f / RateOfFire;
 }
 
 float ARangeWeaponItem::PlayAnimMontage(UAnimMontage* AnimMontage)

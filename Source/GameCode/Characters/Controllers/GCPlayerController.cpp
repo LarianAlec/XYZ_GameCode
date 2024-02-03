@@ -34,7 +34,8 @@ void AGCPlayerController::SetupInputComponent()
 			//EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopMoving);
 			EnhancedInputComponent->BindAction(InputActions->LookAction, ETriggerEvent::Triggered, this, &AGCPlayerController::Look);
 			EnhancedInputComponent->BindAction(InputActions->JumpAction, ETriggerEvent::Started, this, &AGCPlayerController::Jump);
-			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &AGCPlayerController::Fire);
+			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &AGCPlayerController::StartFire);
+			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopFire);
 		}
 	}
 }
@@ -77,10 +78,18 @@ void AGCPlayerController::Jump(const FInputActionValue& Value)
 	}
 }
 
-void AGCPlayerController::Fire(const FInputActionValue& Value)
+void AGCPlayerController::StartFire(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
-		CachedBaseCharacter->Fire();
+		CachedBaseCharacter->StartFire();
+	}
+}
+
+void AGCPlayerController::StopFire(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->StopFire();
 	}
 }

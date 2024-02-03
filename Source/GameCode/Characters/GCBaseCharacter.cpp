@@ -8,6 +8,7 @@
 #include "Engine/HitResult.h"
 #include "GameFramework/Actor.h"
 #include "Components/CharacterComponents/CharacterEquipmentComponent.h"
+#include "Actors/Eqiupment/Weapons/RangeWeaponItem.h"
 
 AGCBaseCharacter::AGCBaseCharacter()
 {
@@ -22,9 +23,22 @@ void AGCBaseCharacter::BeginPlay()
 	CharacterAttributesComponent->OnDeathEvent.AddUObject(this, &AGCBaseCharacter::OnDeath);
 }
 
-void AGCBaseCharacter::Fire()
+void AGCBaseCharacter::StartFire()
 {
-	CharacterEquipmentComponent->Fire();
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->StartFire();
+	}
+}
+
+void AGCBaseCharacter::StopFire()
+{
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->StopFire();
+	}
 }
 
 void AGCBaseCharacter::Falling()
