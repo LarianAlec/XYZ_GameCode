@@ -7,9 +7,7 @@
 #include "GameCodeTypes.h"
 #include "GCBaseCharacterAnimInstance.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GAMECODE_API UGCBaseCharacterAnimInstance : public UAnimInstance
 {
@@ -37,6 +35,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character animation")
 	EEquipableItemType CurrentEquippedItemType = EEquipableItemType::None;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character animation | Weapon")
+	FTransform ForeGripSocketTransform;
 
 private:
 	TWeakObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;

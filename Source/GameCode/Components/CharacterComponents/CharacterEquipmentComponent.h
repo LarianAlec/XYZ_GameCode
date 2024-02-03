@@ -18,6 +18,8 @@ class GAMECODE_API UCharacterEquipmentComponent : public UActorComponent
 public:
 	EEquipableItemType GetCurrentEquippedItemType() const;
 
+	ARangeWeaponItem* GetCurrentRangeWeapon() const;
+
 	void Fire();
 
 protected:

@@ -8,14 +8,15 @@ const FName FXParamTraceEnd = FName("TraceEnd");
 
 const FName SocketCharacterWeapon = FName("CharacterWeaponSocket");
 const FName SocketWeaponMuzzle = FName("MuzzleSocket");
+const FName SocketWeaponForeGrip = FName("ForeGripSocket");
 
 const FName DebugCategoryRangeWeapon = FName("RangeWeapon");
-
 
 
 UENUM(BlueprintType)
 enum class EEquipableItemType : uint8
 {
 	None, 
-	Pistol
+	Pistol,
+	Rifle
 };

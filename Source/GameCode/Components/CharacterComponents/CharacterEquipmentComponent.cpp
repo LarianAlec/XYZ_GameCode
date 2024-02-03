@@ -17,6 +17,11 @@ EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItemType() co
 	return Result;
 }
 
+ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
+{
+	return CurrentEquippedWeapon;
+}
+
 void UCharacterEquipmentComponent::Fire()
 {
 	if (IsValid(CurrentEquippedWeapon))

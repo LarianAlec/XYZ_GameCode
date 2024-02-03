@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/GCBaseCharacter.h"
 #include "Components/CharacterComponents/CharacterEquipmentComponent.h"
+#include "Actors/Eqiupment/Weapons/RangeWeaponItem.h"
 
 void UGCBaseCharacterAnimInstance::NativeBeginPlay()
 {
@@ -34,4 +35,9 @@ void UGCBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
 	CurrentEquippedItemType = CharacterEquipment->GetCurrentEquippedItemType();
 
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipment->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		ForeGripSocketTransform = CurrentRangeWeapon->GetForeGripTransform();
+	}
 }
