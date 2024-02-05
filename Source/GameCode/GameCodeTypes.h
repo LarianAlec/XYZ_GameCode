@@ -12,11 +12,19 @@ const FName SocketWeaponForeGrip = FName("ForeGripSocket");
 
 const FName DebugCategoryRangeWeapon = FName("RangeWeapon");
 
-
 UENUM(BlueprintType)
 enum class EEquipableItemType : uint8
 {
 	None, 
 	Pistol,
 	Rifle
+};
+
+UENUM(BlueprintType)
+enum class EAmunitionType : uint8
+{
+	None,
+	Pistol,
+	Rifle,
+	MAX UMETA(Hidden)
 };

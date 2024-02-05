@@ -22,7 +22,6 @@ ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 	return CurrentEquippedWeapon;
 }
 
-
 void UCharacterEquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -33,6 +32,12 @@ void UCharacterEquipmentComponent::BeginPlay()
 
 void UCharacterEquipmentComponent::CreateLoadout()
 {
+	AmunitionArray.AddZeroed((uint32)EAmunitionType::MAX);
+	for (const TPair<EAmunitionType, int32>& AmmoPair : MaxAmunitionAmount)
+	{
+		AmunitionArray[(uint32)AmmoPair.Key] = FMath::Max(AmmoPair.Value, 0);
+	}
+
 	if (!IsValid(SideArmClass))
 	{
 		return;
@@ -48,6 +53,6 @@ void UCharacterEquipmentComponent::OnCurrentWeaponAmmoChanged(int32 Ammo)
 {
 	if (OnCurrentWeaponAmmoChangedEvent.IsBound())
 	{
-		OnCurrentWeaponAmmoChangedEvent.Broadcast(Ammo);
+		OnCurrentWeaponAmmoChangedEvent.Broadcast(Ammo, AmunitionArray[(uint32)GetCurrentRangeWeapon()->GetAmmoType()]);
 	}
 }

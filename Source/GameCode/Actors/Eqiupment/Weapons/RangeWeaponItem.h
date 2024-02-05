@@ -36,6 +36,8 @@ public:
 
 	void SetAmmo(int32 NewAmmo);
 
+	EAmunitionType GetAmmoType() const;
+
 	bool CanShoot() const;
 
 	float GetAimFOV() const;
@@ -82,7 +84,11 @@ protected:
 	float AimFOV = 60.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo", meta = (ClampMin = 1, UIMin = 1))
+	EAmunitionType AmmoType = EAmunitionType::None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo", meta = (ClampMin = 1, UIMin = 1))
 	int32 MaxAmmo = 30;
+
 
 private:
 	int32 Ammo = 0;

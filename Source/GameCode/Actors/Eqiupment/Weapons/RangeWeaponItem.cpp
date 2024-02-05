@@ -58,6 +58,11 @@ void ARangeWeaponItem::SetAmmo(int32 NewAmmo)
 	}
 }
 
+EAmunitionType ARangeWeaponItem::GetAmmoType() const
+{
+	return AmmoType;
+}
+
 bool ARangeWeaponItem::CanShoot() const
 {
 	return Ammo > 0;

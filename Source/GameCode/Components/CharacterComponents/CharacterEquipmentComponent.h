@@ -7,7 +7,9 @@
 #include "GameCodeTypes.h"
 #include "CharacterEquipmentComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponAmmoChanged, int32);
+typedef TArray<int32, TInlineAllocator<(uint32)EAmunitionType::MAX>> TAmunitionArray;
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCurrentWeaponAmmoChanged, int32, int32);
 
 class ARangeWeaponItem;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -28,7 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
 	TSubclassOf<ARangeWeaponItem> SideArmClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+	TMap<EAmunitionType, int32> MaxAmunitionAmount;
+
 private:
+	TAmunitionArray AmunitionArray;
+
 	void CreateLoadout();
 
 	UFUNCTION()
