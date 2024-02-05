@@ -44,6 +44,21 @@ void ARangeWeaponItem::StopAim()
 	bIsAiming = false;
 }
 
+int32 ARangeWeaponItem::GetAmmo() const
+{
+	return Ammo;
+}
+
+void ARangeWeaponItem::SetAmmo(int32 NewAmmo) 
+{
+	Ammo = NewAmmo;
+}
+
+bool ARangeWeaponItem::CanShoot() const
+{
+	return Ammo > 0;
+}
+
 float ARangeWeaponItem::GetAimFOV() const
 {
 	return AimFOV;
@@ -59,6 +74,12 @@ FTransform ARangeWeaponItem::GetForeGripTransform() const
 	return WeaponMesh->GetSocketTransform(SocketWeaponForeGrip);
 }
 
+void ARangeWeaponItem::BeginPlay()
+{
+	Super::BeginPlay();
+	SetAmmo(MaxAmmo);
+}
+
 float ARangeWeaponItem::GetCurrentBulletSpreadAngle() const
 {
 	float AngleInDegress = bIsAiming ? AimSpreadAngle : SpreadAngle;
@@ -69,6 +90,12 @@ void ARangeWeaponItem::MakeShot()
 {
 	checkf(GetOwner()->IsA<AGCBaseCharacter>(), TEXT("ARangeWeaponItem::Fire() only AGCBaseCharacter can be an owner of a ARangeWeaponItem"))
 	AGCBaseCharacter* CharacterOwner = StaticCast<AGCBaseCharacter*>(GetOwner());
+
+	if (!CanShoot())
+	{
+		StopFire();
+		return;
+	}
 
 	CharacterOwner->PlayAnimMontage(CharacterFireMontage);
 	PlayAnimMontage(WeaponFireMontage);
@@ -88,6 +115,7 @@ void ARangeWeaponItem::MakeShot()
 
 	ViewDirection += GetBulletSpreadOffset(FMath::RandRange(0.0f, GetCurrentBulletSpreadAngle()), PlayerViewRotation);
 
+	Ammo--;
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller);
 }
 

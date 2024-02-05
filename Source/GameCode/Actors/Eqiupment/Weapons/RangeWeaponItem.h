@@ -31,6 +31,12 @@ public:
 
 	void StopAim();
 
+	int32 GetAmmo() const;
+
+	void SetAmmo(int32 NewAmmo);
+
+	bool CanShoot() const;
+
 	float GetAimFOV() const;
 
 	float GetAimMovementMaxSpeed() const;
@@ -38,6 +44,8 @@ public:
 	FTransform GetForeGripTransform() const;
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class USkeletalMeshComponent* WeaponMesh;
 
@@ -59,7 +67,7 @@ protected:
 
 	// Bullet spread half angle in degrees
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
-	float SpreadAngle = 1.0f;
+	float SpreadAngle = 2.0f;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
 	float AimSpreadAngle = 0.25;
@@ -70,7 +78,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 90.0f, UIMax = 90.0f))
 	float AimFOV = 60.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo", meta = (ClampMin = 1, UIMin = 1))
+	int32 MaxAmmo = 30;
+
 private:
+	int32 Ammo = 0;
+
 	float GetCurrentBulletSpreadAngle() const;
 
 	bool bIsAiming = false;
