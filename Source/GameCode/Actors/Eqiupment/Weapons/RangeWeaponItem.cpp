@@ -34,9 +34,35 @@ void ARangeWeaponItem::StopFire()
 	GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
 }
 
+void ARangeWeaponItem::StartAim()
+{
+	bIsAiming = true;
+}
+
+void ARangeWeaponItem::StopAim()
+{
+	bIsAiming = false;
+}
+
+float ARangeWeaponItem::GetAimFOV() const
+{
+	return AimFOV;
+}
+
+float ARangeWeaponItem::GetAimMovementMaxSpeed() const
+{
+	return AimMovementMaxSpeed;
+}
+
 FTransform ARangeWeaponItem::GetForeGripTransform() const 
 {
 	return WeaponMesh->GetSocketTransform(SocketWeaponForeGrip);
+}
+
+float ARangeWeaponItem::GetCurrentBulletSpreadAngle() const
+{
+	float AngleInDegress = bIsAiming ? AimSpreadAngle : SpreadAngle;
+	return FMath::DegreesToRadians(AngleInDegress);
 }
 
 void ARangeWeaponItem::MakeShot()
@@ -60,7 +86,23 @@ void ARangeWeaponItem::MakeShot()
 
 	FVector ViewDirection = PlayerViewRotation.RotateVector(FVector::ForwardVector);
 
+	ViewDirection += GetBulletSpreadOffset(FMath::RandRange(0.0f, GetCurrentBulletSpreadAngle()), PlayerViewRotation);
+
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller);
+}
+
+FVector ARangeWeaponItem::GetBulletSpreadOffset(float Angle, FRotator ShotRotation)
+{
+	float SpreadSize = FMath::Tan(Angle);
+	float RotationAngle = FMath::RandRange(0.0f, 2 * PI);
+	
+	float SpreadY = FMath::Cos(RotationAngle);
+	float SpreadZ = FMath::Sin(RotationAngle);
+
+	FVector Result = (ShotRotation.RotateVector(FVector::UpVector) * SpreadZ 
+					+ ShotRotation.RotateVector(FVector::RightVector) * SpreadY) * SpreadSize;
+
+	return Result;
 }
 
 float ARangeWeaponItem::GetShotTimerInterval() const

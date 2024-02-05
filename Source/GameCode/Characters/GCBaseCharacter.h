@@ -6,7 +6,9 @@
 #include "GameFramework/Character.h"
 #include "GCBaseCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAimStateChanged, bool)
 
+class UCharacterAttributesComponent;
 class UCharacterEquipmentComponent;
 UCLASS(Abstract, NotBlueprintable)
 class GAMECODE_API AGCBaseCharacter : public ACharacter
@@ -30,6 +32,18 @@ public:
 
 	void StopFire();
 
+	void StartAiming();
+
+	void StopAiming();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+	void OnStartAiming();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+	void OnStopAiming();
+
+	float GetCurrentMovementSpeed() const;
+
 	virtual void Falling() override;
 
 	virtual void NotifyJumpApex() override;
@@ -38,9 +52,15 @@ public:
 
 	const UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
 
+	const UCharacterAttributesComponent* GetCharacterAttributesComponent() const;
+
+	bool IsAiming() const { return bIsAiming; }
+
+	FOnAimStateChanged OnAimingStateChanged;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
-	class UCharacterAttributesComponent* CharacterAttributesComponent;
+	UCharacterAttributesComponent* CharacterAttributesComponent;
 
 	virtual void OnDeath();
 
@@ -55,6 +75,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
 	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
+	virtual void OnStartAimingInternal();
+
+	virtual void OnStopAimingInternal();
+
 private:
 	FVector CurrentFallApex;
+
+	bool bIsAiming = false;
+
+	float CurrentAimingMovementSpeed = 0.0f;
+
+	float MaxMovementSpeed = 0.0f;
 };

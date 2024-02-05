@@ -14,6 +14,7 @@ AGCBaseCharacter::AGCBaseCharacter()
 {
 	CharacterAttributesComponent = CreateDefaultSubobject<UCharacterAttributesComponent>(TEXT("Character Attributes"));
 	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("Character Equipment"));
+	MaxMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 void AGCBaseCharacter::BeginPlay()
@@ -39,6 +40,59 @@ void AGCBaseCharacter::StopFire()
 	{
 		CurrentRangeWeapon->StopFire();
 	}
+}
+
+void AGCBaseCharacter::StartAiming()
+{
+	ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+	if (!IsValid(CurrentRangeWeapon))
+	{
+		return;
+	}
+
+	bIsAiming = true;
+	CurrentAimingMovementSpeed = CurrentRangeWeapon->GetAimMovementMaxSpeed();
+
+	GetCharacterMovement()->MaxWalkSpeed = CurrentAimingMovementSpeed;
+	CurrentRangeWeapon->StartAim();
+	OnStartAiming();
+}
+
+void AGCBaseCharacter::StopAiming()
+{
+	if (!bIsAiming)
+	{
+		return;
+	}
+
+	ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->StopAim();
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = MaxMovementSpeed;
+	bIsAiming = false;
+	CurrentAimingMovementSpeed = 0.0f;
+
+	OnStopAiming();	
+}
+
+void AGCBaseCharacter::OnStartAiming_Implementation()
+{
+	OnStartAimingInternal();
+}
+
+void AGCBaseCharacter::OnStopAiming_Implementation()
+{
+	OnStopAimingInternal();
+}
+
+float AGCBaseCharacter::GetCurrentMovementSpeed() const
+{
+	
+	
+	return CurrentAimingMovementSpeed;
 }
 
 void AGCBaseCharacter::Falling()
@@ -69,6 +123,12 @@ const UCharacterEquipmentComponent* AGCBaseCharacter::GetCharacterEquipmentCompo
 	return CharacterEquipmentComponent;
 }
 
+
+const UCharacterAttributesComponent* AGCBaseCharacter::GetCharacterAttributesComponent() const
+{
+	return CharacterAttributesComponent;
+}
+
 void AGCBaseCharacter::OnDeath()
 {
 	GetCharacterMovement()->DisableMovement();
@@ -83,4 +143,20 @@ void AGCBaseCharacter::EnableRagdoll()
 {
 	GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
 	GetMesh()->SetSimulatePhysics(true);
+}
+
+void AGCBaseCharacter::OnStartAimingInternal()
+{
+	if (OnAimingStateChanged.IsBound())
+	{
+		OnAimingStateChanged.Broadcast(true);
+	}
+}
+
+void AGCBaseCharacter::OnStopAimingInternal()
+{
+	if (OnAimingStateChanged.IsBound())
+	{
+		OnAimingStateChanged.Broadcast(false);
+	}
 }

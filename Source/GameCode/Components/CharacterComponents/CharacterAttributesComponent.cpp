@@ -60,5 +60,9 @@ void UCharacterAttributesComponent::TickComponent(float DeltaTime, ELevelTick Ti
 
 }
 
+float UCharacterAttributesComponent::GetHealthPercent() const
+{
+	return Health / MaxHealth;
+}
 
 

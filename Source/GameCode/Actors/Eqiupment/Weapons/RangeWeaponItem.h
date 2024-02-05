@@ -27,6 +27,14 @@ public:
 
 	void StopFire();
 
+	void StartAim();
+
+	void StopAim();
+
+	float GetAimFOV() const;
+
+	float GetAimMovementMaxSpeed() const;
+
 	FTransform GetForeGripTransform() const;
 
 protected:
@@ -49,9 +57,27 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 1.0f, UIMin = 1.0f))
 	float RateOfFire = 600.0f;
 
+	// Bullet spread half angle in degrees
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
+	float SpreadAngle = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
+	float AimSpreadAngle = 0.25;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 250.0f, UIMax = 250.0f))
+	float AimMovementMaxSpeed = 200.0f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 90.0f, UIMax = 90.0f))
+	float AimFOV = 60.0f;
 
 private:
+	float GetCurrentBulletSpreadAngle() const;
+
+	bool bIsAiming = false;
+
 	void MakeShot();
+
+	FVector GetBulletSpreadOffset(float Angle, FRotator ShotRotation);
 
 	float GetShotTimerInterval() const;
 

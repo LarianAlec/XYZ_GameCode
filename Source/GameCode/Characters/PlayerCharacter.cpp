@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Actors/Eqiupment/Weapons/RangeWeaponItem.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -56,4 +58,38 @@ void APlayerCharacter::Turn(float Value)
 void APlayerCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void APlayerCharacter::OnStartAimingInternal()
+{
+	Super::OnStartAimingInternal();
+	APlayerController* PlayerController = GetController<APlayerController>();
+	if (!IsValid(PlayerController))
+	{
+		return;
+	}
+
+	APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
+	if (IsValid(CameraManager))
+	{
+		ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+		CameraManager->SetFOV(CurrentRangeWeapon->GetAimFOV());
+	}
+}
+
+void APlayerCharacter::OnStopAimingInternal()
+{
+	Super::OnStopAimingInternal();
+	APlayerController* PlayerController = GetController<APlayerController>();
+	if (!IsValid(PlayerController))
+	{
+		return;
+	}
+
+	APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
+	if (IsValid(CameraManager))
+	{
+		ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+		CameraManager->UnlockFOV();
+	}
 }

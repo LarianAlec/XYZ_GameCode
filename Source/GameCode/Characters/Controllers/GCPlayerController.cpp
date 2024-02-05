@@ -8,12 +8,16 @@
 #include "InputActionValue.h"
 #include "Input/GCCharacterInputConfigData.h"
 #include "InputMappingContext.h"
+#include "Blueprint/UserWidget.h"
+#include "UI/Widget/PlayerHudWidget.h"
+#include "UI/Widget/ReticleWidget.h"
 
 
 void AGCPlayerController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
 	CachedBaseCharacter = Cast<AGCBaseCharacter>(InPawn);
+	CreateAndInitializeWidgets();
 }
 
 void AGCPlayerController::SetupInputComponent()
@@ -31,11 +35,12 @@ void AGCPlayerController::SetupInputComponent()
 
 			UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 			EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Triggered, this, &AGCPlayerController::Move);
-			//EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopMoving);
 			EnhancedInputComponent->BindAction(InputActions->LookAction, ETriggerEvent::Triggered, this, &AGCPlayerController::Look);
 			EnhancedInputComponent->BindAction(InputActions->JumpAction, ETriggerEvent::Started, this, &AGCPlayerController::Jump);
-			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &AGCPlayerController::StartFire);
-			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &AGCPlayerController::StopFire);
+			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &AGCPlayerController::PlayerStartFire);
+			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &AGCPlayerController::PlayerStopFire);
+			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Started, this, &AGCPlayerController::StartAiming);
+			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Completed , this, &AGCPlayerController::StopAiming);
 		}
 	}
 }
@@ -50,15 +55,6 @@ void AGCPlayerController::Move(const FInputActionValue& Value)
 	}
 }
 
-/*
-void AGCPlayerController::StopMoving(const FInputActionValue& Value)
-{
-	if (CachedBaseCharacter.IsValid())
-	{
-		//CachedBaseCharacter->StopMoving(Value);
-	}
-}
-*/
 
 void AGCPlayerController::Look(const FInputActionValue& Value)
 {
@@ -78,7 +74,7 @@ void AGCPlayerController::Jump(const FInputActionValue& Value)
 	}
 }
 
-void AGCPlayerController::StartFire(const FInputActionValue& Value)
+void AGCPlayerController::PlayerStartFire(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
@@ -86,10 +82,47 @@ void AGCPlayerController::StartFire(const FInputActionValue& Value)
 	}
 }
 
-void AGCPlayerController::StopFire(const FInputActionValue& Value)
+void AGCPlayerController::PlayerStopFire(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->StopFire();
+	}
+}
+
+void AGCPlayerController::StartAiming(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->StartAiming();
+	}
+}
+
+void AGCPlayerController::StopAiming(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->StopAiming();
+	}
+}
+
+void AGCPlayerController::CreateAndInitializeWidgets()
+{
+	if (!IsValid(PlayerHudWidget))
+	{
+		PlayerHudWidget = CreateWidget<UPlayerHudWidget>(GetWorld(), PlayerHudWidgetClass);
+		if (IsValid(PlayerHudWidget))
+		{
+			PlayerHudWidget->AddToViewport();
+		}
+	}
+	
+	if (IsValid(PlayerHudWidget) && CachedBaseCharacter.IsValid())
+	{
+		UReticleWidget* ReticleWidget = PlayerHudWidget->GetReticleWidget();
+		if (IsValid(ReticleWidget))
+		{
+			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(ReticleWidget, FName("OnAimingStateChanged"));
+		}
 	}
 }
