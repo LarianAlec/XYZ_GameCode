@@ -52,6 +52,8 @@ public:
 
 	const UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
 
+	UCharacterEquipmentComponent* GetCharacterEquipmentComponent_Mutable() const;
+
 	const UCharacterAttributesComponent* GetCharacterAttributesComponent() const;
 
 	bool IsAiming() const { return bIsAiming; }

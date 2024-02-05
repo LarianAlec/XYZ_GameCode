@@ -11,6 +11,8 @@
 #include "Blueprint/UserWidget.h"
 #include "UI/Widget/PlayerHudWidget.h"
 #include "UI/Widget/ReticleWidget.h"
+#include "UI/Widget/AmmoWidget.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 
 void AGCPlayerController::SetPawn(APawn* InPawn)
@@ -123,6 +125,13 @@ void AGCPlayerController::CreateAndInitializeWidgets()
 		if (IsValid(ReticleWidget))
 		{
 			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(ReticleWidget, FName("OnAimingStateChanged"));
+		}
+
+		UAmmoWidget* AmmoWidget = PlayerHudWidget->GetAmmoWidget();
+		if (IsValid(AmmoWidget))
+		{
+			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent_Mutable();
+			CharacterEquipment->OnCurrentWeaponAmmoChangedEvent.AddUFunction(AmmoWidget, FName("UpdateAmmoCount"));
 		}
 	}
 }

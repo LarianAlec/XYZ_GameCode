@@ -124,6 +124,11 @@ const UCharacterEquipmentComponent* AGCBaseCharacter::GetCharacterEquipmentCompo
 }
 
 
+UCharacterEquipmentComponent* AGCBaseCharacter::GetCharacterEquipmentComponent_Mutable() const
+{
+	return CharacterEquipmentComponent;
+}
+
 const UCharacterAttributesComponent* AGCBaseCharacter::GetCharacterAttributesComponent() const
 {
 	return CharacterAttributesComponent;

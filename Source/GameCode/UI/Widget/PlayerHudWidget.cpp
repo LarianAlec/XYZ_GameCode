@@ -7,6 +7,17 @@
 #include "Components/CharacterComponents/CharacterAttributesComponent.h"
 #include "ReticleWidget.h"
 #include "Blueprint/WidgetTree.h"
+#include "AmmoWidget.h"
+
+UReticleWidget* UPlayerHudWidget::GetReticleWidget()
+{
+	return WidgetTree->FindWidget<UReticleWidget>(ReticleWidgetName);
+}
+
+UAmmoWidget* UPlayerHudWidget::GetAmmoWidget()
+{
+	return WidgetTree->FindWidget<UAmmoWidget>(AmmoWidgetName);
+}
 
 float UPlayerHudWidget::GetHealthPercent() const
 {
@@ -19,9 +30,4 @@ float UPlayerHudWidget::GetHealthPercent() const
 		Result = CharacterAttributes->GetHealthPercent();
 	}
 	return Result;
-}
-
-UReticleWidget* UPlayerHudWidget::GetReticleWidget()
-{
-	return WidgetTree->FindWidget<UReticleWidget>(ReticleWidgetName);
 }

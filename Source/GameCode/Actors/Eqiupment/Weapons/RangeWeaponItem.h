@@ -6,13 +6,14 @@
 #include "Actors/Eqiupment/EquipableItem.h"
 #include "RangeWeaponItem.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAmmoChanged, int32);
+
 UENUM(BlueprintType)
 enum class EWeaponFireMode : uint8
 {
 	Single,
 	FullAuto
 };
-
 
 class UAnimMontage;
 UCLASS(Blueprintable)
@@ -42,6 +43,8 @@ public:
 	float GetAimMovementMaxSpeed() const;
 
 	FTransform GetForeGripTransform() const;
+
+	FOnAmmoChanged OnAmmoChanged;
 
 protected:
 	virtual void BeginPlay() override;

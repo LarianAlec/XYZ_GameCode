@@ -52,6 +52,10 @@ int32 ARangeWeaponItem::GetAmmo() const
 void ARangeWeaponItem::SetAmmo(int32 NewAmmo) 
 {
 	Ammo = NewAmmo;
+	if (OnAmmoChanged.IsBound())
+	{
+		OnAmmoChanged.Broadcast(Ammo);
+	}
 }
 
 bool ARangeWeaponItem::CanShoot() const
@@ -115,7 +119,7 @@ void ARangeWeaponItem::MakeShot()
 
 	ViewDirection += GetBulletSpreadOffset(FMath::RandRange(0.0f, GetCurrentBulletSpreadAngle()), PlayerViewRotation);
 
-	Ammo--;
+	SetAmmo(Ammo - 1);
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller);
 }
 
