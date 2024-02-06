@@ -36,6 +36,7 @@ private:
 	void PlayerStopFire(const FInputActionValue& Value);
 	void StartAiming(const FInputActionValue& Value);
 	void StopAiming(const FInputActionValue& Value);
+	void Reload(const FInputActionValue& Value);
 
 	TSoftObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 

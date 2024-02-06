@@ -43,6 +43,7 @@ void AGCPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &AGCPlayerController::PlayerStopFire);
 			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Started, this, &AGCPlayerController::StartAiming);
 			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Completed , this, &AGCPlayerController::StopAiming);
+			EnhancedInputComponent->BindAction(InputActions->ReloadAction, ETriggerEvent::Started, this, &AGCPlayerController::Reload);
 		}
 	}
 }
@@ -105,6 +106,14 @@ void AGCPlayerController::StopAiming(const FInputActionValue& Value)
 	if (CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->StopAiming();
+	}
+}
+
+void AGCPlayerController::Reload(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->Reload();
 	}
 }
 

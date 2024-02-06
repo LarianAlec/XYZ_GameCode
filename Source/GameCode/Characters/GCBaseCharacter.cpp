@@ -78,6 +78,14 @@ void AGCBaseCharacter::StopAiming()
 	OnStopAiming();	
 }
 
+void AGCBaseCharacter::Reload() const
+{
+	if (IsValid(CharacterEquipmentComponent->GetCurrentRangeWeapon()))
+	{
+		CharacterEquipmentComponent->ReloadCurrentWeapon();
+	}
+}
+
 void AGCBaseCharacter::OnStartAiming_Implementation()
 {
 	OnStartAimingInternal();

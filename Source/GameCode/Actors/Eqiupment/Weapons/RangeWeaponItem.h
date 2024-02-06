@@ -7,6 +7,7 @@
 #include "RangeWeaponItem.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAmmoChanged, int32);
+DECLARE_MULTICAST_DELEGATE(FOnReloadCompleted);
 
 UENUM(BlueprintType)
 enum class EWeaponFireMode : uint8
@@ -32,7 +33,13 @@ public:
 
 	void StopAim();
 
+	void StartReload();
+
+	void EndReload(bool bIsSuccess);
+
 	int32 GetAmmo() const;
+
+	int32 GetMaxAmmo() const;
 
 	void SetAmmo(int32 NewAmmo);
 
@@ -48,6 +55,8 @@ public:
 
 	FOnAmmoChanged OnAmmoChanged;
 
+	FOnReloadCompleted OnReloadComplete;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -60,8 +69,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Weapon")
 	UAnimMontage* WeaponFireMontage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Weapon")
+	UAnimMontage* WeaponReloadMontage;
+
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Animations | Character")
 	UAnimMontage* CharacterFireMontage;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Animations | Character")
+	UAnimMontage* CharacterReloadMontage;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters")
 	EWeaponFireMode WeaponFireMode = EWeaponFireMode::Single;
@@ -89,9 +104,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo", meta = (ClampMin = 1, UIMin = 1))
 	int32 MaxAmmo = 30;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo")
+	bool bAutoReload = true;
 
 private:
 	int32 Ammo = 0;
+
+	bool bIsReloading = false;
 
 	float GetCurrentBulletSpreadAngle() const;
 
@@ -106,4 +125,6 @@ private:
 	float PlayAnimMontage(UAnimMontage* AnimMontage);
 
 	FTimerHandle ShotTimer;
+
+	FTimerHandle ReloadTimer;
 };

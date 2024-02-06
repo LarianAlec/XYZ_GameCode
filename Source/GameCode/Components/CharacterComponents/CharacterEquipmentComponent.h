@@ -22,6 +22,8 @@ public:
 
 	ARangeWeaponItem* GetCurrentRangeWeapon() const;
 
+	void ReloadCurrentWeapon();
+
 	FOnCurrentWeaponAmmoChanged OnCurrentWeaponAmmoChangedEvent;
 
 protected:
@@ -38,9 +40,15 @@ private:
 
 	void CreateLoadout();
 
+	int32 GetAvaliableAmunitionCurrentForWeapon();
+
+	UFUNCTION()
+	void OnWeaponReloadComplete();
+
 	UFUNCTION()
 	void OnCurrentWeaponAmmoChanged(int32 Ammo);
 
 	ARangeWeaponItem* CurrentEquippedWeapon;
+
 	TWeakObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 };

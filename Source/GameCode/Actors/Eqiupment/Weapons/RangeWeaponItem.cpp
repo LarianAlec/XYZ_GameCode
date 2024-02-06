@@ -44,9 +44,49 @@ void ARangeWeaponItem::StopAim()
 	bIsAiming = false;
 }
 
+void ARangeWeaponItem::StartReload()
+{
+	checkf(GetOwner()->IsA<AGCBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only AGCBaseCharacter can be an owner of a ARangeWeaponItem"))
+	AGCBaseCharacter* CharacterOwner = StaticCast<AGCBaseCharacter*>(GetOwner());
+
+	bIsReloading = true;
+	if (IsValid(CharacterReloadMontage))
+	{
+		float MontageDuration = CharacterOwner->PlayAnimMontage(CharacterReloadMontage);
+		PlayAnimMontage(WeaponReloadMontage);
+		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, [this]() { EndReload(true); }, MontageDuration, false);
+	}
+	else
+	{
+		EndReload(true);
+	}
+}
+
+void ARangeWeaponItem::EndReload(bool bIsSuccess)
+{
+	if (!bIsReloading)
+	{
+		return;
+	}
+
+	GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
+
+	bIsReloading = false;
+	if (bIsSuccess && OnReloadComplete.IsBound())
+	{
+		OnReloadComplete.Broadcast();
+	}
+
+}
+
 int32 ARangeWeaponItem::GetAmmo() const
 {
 	return Ammo;
+}
+
+int32 ARangeWeaponItem::GetMaxAmmo() const
+{
+	return MaxAmmo;
 }
 
 void ARangeWeaponItem::SetAmmo(int32 NewAmmo) 
@@ -103,9 +143,14 @@ void ARangeWeaponItem::MakeShot()
 	if (!CanShoot())
 	{
 		StopFire();
+		if (Ammo == 0 && bAutoReload)
+		{
+			CharacterOwner->Reload();
+		}
 		return;
 	}
 
+	EndReload(false);
 	CharacterOwner->PlayAnimMontage(CharacterFireMontage);
 	PlayAnimMontage(WeaponFireMontage);
 
