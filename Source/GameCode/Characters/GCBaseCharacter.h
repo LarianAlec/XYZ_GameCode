@@ -36,7 +36,11 @@ public:
 
 	void StopAiming();
 
-	void Reload() const;
+	void Reload();
+
+	void NextItem();
+
+	void PreviousItem();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 	void OnStartAiming();

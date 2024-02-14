@@ -37,6 +37,8 @@ private:
 	void StartAiming(const FInputActionValue& Value);
 	void StopAiming(const FInputActionValue& Value);
 	void Reload(const FInputActionValue& Value);
+	void EquipNextItem(const FInputActionValue& Value);
+	void EquipPreviousItem(const FInputActionValue& Value);
 
 	TSoftObjectPtr<class AGCBaseCharacter> CachedBaseCharacter;
 

@@ -44,6 +44,8 @@ void AGCPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Started, this, &AGCPlayerController::StartAiming);
 			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Completed , this, &AGCPlayerController::StopAiming);
 			EnhancedInputComponent->BindAction(InputActions->ReloadAction, ETriggerEvent::Started, this, &AGCPlayerController::Reload);
+			EnhancedInputComponent->BindAction(InputActions->EquipNextItemAction, ETriggerEvent::Triggered, this, &AGCPlayerController::EquipNextItem);
+			EnhancedInputComponent->BindAction(InputActions->EquipPreviousItemAction, ETriggerEvent::Triggered, this, &AGCPlayerController::EquipPreviousItem);
 		}
 	}
 }
@@ -114,6 +116,22 @@ void AGCPlayerController::Reload(const FInputActionValue& Value)
 	if (CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->Reload();
+	}
+}
+
+void AGCPlayerController::EquipNextItem(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->NextItem();
+	}
+}
+
+void AGCPlayerController::EquipPreviousItem(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->PreviousItem();
 	}
 }
 

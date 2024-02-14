@@ -17,6 +17,8 @@ ARangeWeaponItem::ARangeWeaponItem()
 
 	WeaponBarrel = CreateDefaultSubobject<UWeaponBarrelComponent>(TEXT("Weapon Barrel"));
 	WeaponBarrel->SetupAttachment(WeaponMesh, SocketWeaponMuzzle);
+
+	EquippedSocketName = SocketCharacterWeapon;
 }
 
 void ARangeWeaponItem::StartFire()
@@ -67,6 +69,14 @@ void ARangeWeaponItem::EndReload(bool bIsSuccess)
 	if (!bIsReloading)
 	{
 		return;
+	}
+
+	if (!bIsSuccess)
+	{
+		checkf(GetOwner()->IsA<AGCBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only AGCBaseCharacter can be an owner of a ARangeWeaponItem"))
+		AGCBaseCharacter* CharacterOwner = StaticCast<AGCBaseCharacter*>(GetOwner());
+		CharacterOwner->StopAnimMontage(CharacterReloadMontage);
+		StopAnimMontage(WeaponReloadMontage);
 	}
 
 	GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
@@ -201,4 +211,14 @@ float ARangeWeaponItem::PlayAnimMontage(UAnimMontage* AnimMontage)
 		Result = WeaponAnimInstance->Montage_Play(AnimMontage);
 	}
 	return Result;
+}
+
+void ARangeWeaponItem::StopAnimMontage(UAnimMontage* AnimMontage, float BlendOutTime /*= 0.0f*/)
+{
+	UAnimInstance* WeaponAnimInstance = WeaponMesh->GetAnimInstance();
+	
+	if (IsValid(WeaponAnimInstance))
+	{
+		WeaponAnimInstance->Montage_Stop(BlendOutTime, AnimMontage);
+	}
 }

@@ -124,6 +124,8 @@ private:
 
 	float PlayAnimMontage(UAnimMontage* AnimMontage);
 
+	void StopAnimMontage(UAnimMontage* AnimMontage, float BlendOutTime = 0.0f);
+
 	FTimerHandle ShotTimer;
 
 	FTimerHandle ReloadTimer;

@@ -26,6 +26,10 @@ void AGCBaseCharacter::BeginPlay()
 
 void AGCBaseCharacter::StartFire()
 {
+	if (CharacterEquipmentComponent->IsEquipping())
+	{
+		return;
+	}
 	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
 	if (IsValid(CurrentRangeWeapon))
 	{
@@ -78,12 +82,22 @@ void AGCBaseCharacter::StopAiming()
 	OnStopAiming();	
 }
 
-void AGCBaseCharacter::Reload() const
+void AGCBaseCharacter::Reload()
 {
 	if (IsValid(CharacterEquipmentComponent->GetCurrentRangeWeapon()))
 	{
 		CharacterEquipmentComponent->ReloadCurrentWeapon();
 	}
+}
+
+void AGCBaseCharacter::NextItem()
+{
+	CharacterEquipmentComponent->EquipNextItem();
+}
+
+void AGCBaseCharacter::PreviousItem()
+{
+	CharacterEquipmentComponent->EquipPreviousItem();
 }
 
 void AGCBaseCharacter::OnStartAiming_Implementation()
