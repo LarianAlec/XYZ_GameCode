@@ -37,3 +37,10 @@ enum class EEquipmentSlots : uint8
 	PrimeryWeapon,
 	MAX UMETA(Hidden)
 };
+
+UENUM(BlueprintType)
+enum class ETeams : uint8
+{
+	Player,
+	Enemy
+};

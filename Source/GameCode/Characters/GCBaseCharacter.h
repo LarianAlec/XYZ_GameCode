@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameCodeTypes.h"
+#include "GenericTeamAgentInterface.h"
 #include "GCBaseCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAimStateChanged, bool)
@@ -11,7 +13,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnAimStateChanged, bool)
 class UCharacterAttributesComponent;
 class UCharacterEquipmentComponent;
 UCLASS(Abstract, NotBlueprintable)
-class GAMECODE_API AGCBaseCharacter : public ACharacter
+class GAMECODE_API AGCBaseCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -19,6 +21,8 @@ public:
 	AGCBaseCharacter();
 
 	virtual void BeginPlay() override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void MoveForward(float Value) {};
 
@@ -66,6 +70,11 @@ public:
 
 	FOnAimStateChanged OnAimingStateChanged;
 
+/** IGenericTeamAgentInterface **/
+	virtual FGenericTeamId GetGenericTeamId() const override;
+
+/** ~IGenericTeamAgentInterface **/
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
 	UCharacterAttributesComponent* CharacterAttributesComponent;
@@ -86,6 +95,9 @@ protected:
 	virtual void OnStartAimingInternal();
 
 	virtual void OnStopAimingInternal();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Team")
+	ETeams Team = ETeams::Enemy;
 
 private:
 	FVector CurrentFallApex;

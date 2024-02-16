@@ -9,6 +9,8 @@
 #include "GameFramework/Actor.h"
 #include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 #include "Actors/Eqiupment/Weapons/RangeWeaponItem.h"
+#include "AIController.h"
+
 
 AGCBaseCharacter::AGCBaseCharacter()
 {
@@ -22,6 +24,17 @@ void AGCBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CharacterAttributesComponent->OnDeathEvent.AddUObject(this, &AGCBaseCharacter::OnDeath);
+}
+
+void AGCBaseCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	AAIController* AIController = Cast<AAIController>(NewController);
+	if (IsValid(AIController))
+	{
+		FGenericTeamId TeamId((uint8)Team);
+		AIController->SetGenericTeamId(TeamId);
+	}
 }
 
 void AGCBaseCharacter::StartFire()
@@ -154,6 +167,11 @@ UCharacterEquipmentComponent* AGCBaseCharacter::GetCharacterEquipmentComponent_M
 const UCharacterAttributesComponent* AGCBaseCharacter::GetCharacterAttributesComponent() const
 {
 	return CharacterAttributesComponent;
+}
+
+FGenericTeamId AGCBaseCharacter::GetGenericTeamId() const
+{
+	return FGenericTeamId((uint8)Team);
 }
 
 void AGCBaseCharacter::OnDeath()
