@@ -22,6 +22,8 @@ void AAITurretController::SetPawn(APawn* InPawn)
 
 void AAITurretController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	Super::ActorsPerceptionUpdated(UpdatedActors);
+
 	if(!CachedTurret.IsValid())
 	{
 		return;
