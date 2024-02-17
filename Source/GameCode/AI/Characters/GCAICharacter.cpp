@@ -3,6 +3,7 @@
 
 #include "AI/Characters/GCAICharacter.h"
 #include "Components/CharacterComponents/AIPatrollingComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 AGCAICharacter::AGCAICharacter()
 {
@@ -12,4 +13,9 @@ AGCAICharacter::AGCAICharacter()
 UAIPatrollingComponent* AGCAICharacter::GetPatrollingComponent() const
 {
 	return AIPatrollingComponent;
+}
+
+UBehaviorTree* AGCAICharacter::GetBehaviorTree() const
+{
+	return BehaviorTree;
 }

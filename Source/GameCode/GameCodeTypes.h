@@ -12,6 +12,9 @@ const FName SocketWeaponForeGrip = FName("ForeGripSocket");
 
 const FName DebugCategoryRangeWeapon = FName("RangeWeapon");
 
+const FName BB_CurrentTarget = FName("CurrentTurget");
+const FName BB_NextLocation = FName("NextLocation");
+
 UENUM(BlueprintType)
 enum class EEquipableItemType : uint8
 {
